@@ -15,6 +15,7 @@ import (
 	"github.com/wisdman/lit3d-system/libs/service"
 
 	"github.com/wisdman/lit3d-system/packages/shell/api"
+	"github.com/wisdman/lit3d-system/packages/shell/core"
 )
 
 //go:embed app/*
@@ -24,8 +25,8 @@ var appFS, _ = fs.Sub(appEmbedFS, "app")
 func main() {
 
 	var certFile, keyFile string
-  flag.StringVar(&certFile, "crt", "./ssl/server.crt", "TLS server certificate path")
-  flag.StringVar(&keyFile, "key", "./ssl/server.key", "TLS server private key path")
+  flag.StringVar(&certFile, "crt", "./ssl/localhost.crt", "TLS localhost certificate path")
+  flag.StringVar(&keyFile, "key", "./ssl/localhost.key", "TLS localhost private key path")
 
   var appDir, commonDir string
   flag.StringVar(&appDir, "app", "", "App directory path")
@@ -55,11 +56,23 @@ func main() {
 		srv.FS("/common/", http.FS(common.FS))
 	}
 
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Incorrect run directory: %v\n", err)
+	}
+
+	srv.FS("/content/", http.Dir(dir))
+
 	api := &api.API{ srv.API("/api") }
-	api.GET("/control/shutdown", api.ControlShutdown)
-	api.GET("/control/restart", api.ControlRestart)
+	api.GET("/shutdown", api.Shutdown)
+	api.GET("/restart", api.Restart)
+	api.GET("/id", api.GetID)
+	api.POST("/id", api.SetID)
+	api.GET("/screens", api.GetScreens)
 	
 	srv.ListenAndServe()
+
+	core.VVVV()
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
@@ -67,3 +80,5 @@ func main() {
 
 	srv.Shutdown()
 }
+
+
