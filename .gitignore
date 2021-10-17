@@ -1,0 +1,45 @@
+### macOS ###
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+### Windows ###
+Desktop.ini
+ehthumbs.db
+Thumbs.db
+
+### SublimeText ###
+*.sublime-project
+*.sublime-workspace
+
+### VSCode ###
+.history
+.vscode
+
+### IntelliJ ###
+.idea
+
+### node_modules ###
+node_modules/
+
+### Build artifacts ###
+/build/*
+!/build/.gitkeep
+
+### Releases ###
+/release/*
+!/release/.gitkeep
+
+### Runtime environment ###
+*.env
+*.lock
+*.pid
+*.seed
+
+### Logs ###
+*.log
+
+### Temporary files ###
+*.tmp
+*.bak
+._*

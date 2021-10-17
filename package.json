@@ -1,0 +1,24 @@
+{
+  "name": "lit3d-system",
+  "version": "1.0.0",
+  "description": "Lit3D Media Exposition Engine",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wisdman/lit3d-system.git"
+  },
+  "homepage": "https://github.com/wisdman/lit3d-system",
+  "bugs": "https://github.com/wisdman/lit3d-system/issues",
+  "author": "wisdman <wisdman@wisdman.io> (https://github.com/wisdman)",
+  "contributors": [
+    "Wisdman <wisdman@wisdman.io> (https://github.com/wisdman)",
+    "Yulia Fedyakina <yuliaf@lit3d.io> (https://github.com/saigach)"
+  ],
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "workspaces": [ "packages/*" ],
+  "scripts": {
+    "clean": "rm -rf ./build/*",
+    "ssl": "bash -c 'openssl req -x509 -nodes -days 3650 -newkey ec:<(openssl ecparam -name secp384r1) -subj \"/C=RU/ST=UR/L=Ekaterinburg/O=Lit3d/OU=RMH/CN=localhost/emailAddress=lit3d@localhost\" -reqexts SAN -extensions SAN -config <(cat /etc/ssl/openssl.cnf <(printf \"[SAN]\nsubjectAltName=DNS:localhost\")) -keyout ssl/ecdsa.key -out ssl/ecdsa.crt'"
+  }
+}
