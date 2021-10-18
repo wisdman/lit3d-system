@@ -19,6 +19,6 @@
   "workspaces": [ "packages/*" ],
   "scripts": {
     "clean": "rm -rf ./build/*",
-    "ssl": "bash -c 'openssl req -x509 -nodes -days 3650 -newkey ec:<(openssl ecparam -name secp384r1) -subj \"/C=RU/ST=UR/L=Ekaterinburg/O=Lit3d/OU=RMH/CN=localhost/emailAddress=lit3d@localhost\" -reqexts SAN -extensions SAN -config <(cat /etc/ssl/openssl.cnf <(printf \"[SAN]\nsubjectAltName=DNS:localhost,DNS:future.rmh.local\")) -keyout ssl/server.key -out ssl/server.crt'"
+    "ssl": "bash -c 'openssl req -x509 -nodes -days 3650 -newkey ec:<(openssl ecparam -name secp384r1) -subj \"/C=RU/ST=UR/L=Ekaterinburg/O=Lit3d/OU=RMH/CN=localhost/emailAddress=lit3d@localhost\" -reqexts SAN -extensions SAN -config <(cat /etc/ssl/openssl.cnf <(printf \"[SAN]\nsubjectAltName=DNS:future.rmh.local,DNS:localhost\")) -keyout ssl/server.key -out ssl/server.crt'"
   }
 }
