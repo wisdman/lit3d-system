@@ -21,6 +21,7 @@ export class NodeComponent extends HTMLElement {
   #groupNode = document.createElement("div")
   #ipNode = document.createElement("div")
 
+  #showIdBtn = document.createElement("button")
   #reloadBtn = document.createElement("button")
   #restartBtn = document.createElement("button")
   #shutdownBtn = document.createElement("button")
@@ -107,6 +108,10 @@ export class NodeComponent extends HTMLElement {
 
     this.#ipNode.classList.add("label", "label--ip")
     root.appendChild(this.#ipNode)
+    
+    this.#showIdBtn.innerHTML = "Show ID"
+    this.#showIdBtn.classList.add("btn", "btn--id")
+    root.appendChild(this.#showIdBtn)
 
     this.#stopBtn.innerHTML = "Stop"
     this.#stopBtn.classList.add("btn", "btn--stop")
@@ -123,6 +128,19 @@ export class NodeComponent extends HTMLElement {
     this.#shutdownBtn.innerHTML = "Shutdown"
     this.#shutdownBtn.classList.add("btn", "btn--shutdown")
     root.appendChild(this.#shutdownBtn)
+  }
+
+  #showId = async (event) => {
+    event.preventDefault() 
+    try {
+      await this.#messageBus.command({
+        client: this.#id,
+        group: this.#group,
+        type: "show-id",
+      })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   #reload = async (event) => {
@@ -178,6 +196,7 @@ export class NodeComponent extends HTMLElement {
   } 
 
   connectedCallback() {
+    this.#showIdBtn.addEventListener("click", this.#showId)
     this.#reloadBtn.addEventListener("click", this.#reload)
     this.#restartBtn.addEventListener("click", this.#restart)
     this.#shutdownBtn.addEventListener("click", this.#shutdown)
@@ -185,6 +204,7 @@ export class NodeComponent extends HTMLElement {
   }
 
   disconnectedCallback() {
+    this.#showIdBtn.removeEventListener("click", this.#showId)
     this.#reloadBtn.removeEventListener("click", this.#reload)
     this.#restartBtn.removeEventListener("click", this.#restart)
     this.#shutdownBtn.removeEventListener("click", this.#shutdown)

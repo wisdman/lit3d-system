@@ -8,6 +8,7 @@ const(
   Mapping = "mapping"
   Reload = "reload"
   Restart = "restart"
+  ShowId = "show-id"
   Shutdown = "shutdown"
   Stop = "stop"
 )
