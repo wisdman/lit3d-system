@@ -83,11 +83,11 @@ func Run()  {
 
   if config.VVVV != nil {
     log.Printf("Run VVVV with %s\n", *config.VVVV)
-    // VVVV(*config.VVVV)
+    VVVV(*config.VVVV)
   }
 
   if config.Mapping != nil && len(*config.Mapping) > 0 {
     log.Printf("Run Chrome with url %s\n", "https://localhost")
-    //Chrome("https://localhost")
+    Chrome("https://localhost")
   }
 }
