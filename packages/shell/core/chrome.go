@@ -5,7 +5,6 @@ import (
 	"log"
 	"os/exec"
 	"path/filepath"
-	"time"
 )
 
 const chromePath = "./chromium/chrome.exe"
@@ -28,21 +27,17 @@ func init() {
 	}
 }
 
-func Chrome() {
+func Chrome(url string) {
 	cmd := exec.Command(
 		chromeAbs,
 		fmt.Sprintf("--user-data-dir=%s", chromeDataAbs),
 		"--profile-directory=Default",
-		"https://localhost",
+		url,
 	)
 
 	if err := cmd.Start(); err != nil {
 		log.Fatalf("Chrome init error: %v\n", err)
 	}
 
-	time.Sleep(5 * time.Second)
-
-	if err := cmd.Process.Kill(); err != nil {
-		log.Printf("Chrome shutdown error: %v\n", err)
-	}
+	log.Printf("Chrome started with url %s\n", url)
 }

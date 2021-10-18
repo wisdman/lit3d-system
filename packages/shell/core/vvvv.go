@@ -5,7 +5,7 @@ import (
 	"log"
 	"os/exec"
 	"path/filepath"
-	"time"
+	// "time"
 )
 
 const vvvvPath = "./vvvv/vvvv.exe"
@@ -28,8 +28,8 @@ func init() {
 	}
 }
 
-func VVVV() {
-	slaveAbs, err := filepath.Abs(filepath.Join(contentAbs, "./0_SS_Деловая_среда/_slave_content.v4p"))
+func VVVV(path string) {
+	slaveAbs, err := filepath.Abs(filepath.Join(contentAbs, "./" + path))
 	if err != nil {
 		log.Fatalf("Incorrect VVVV slave file path: %v\n", err)
 	}
@@ -43,9 +43,5 @@ func VVVV() {
 		log.Fatalf("VVVV init error: %v\n", err)
 	}
 
-	time.Sleep(15 * time.Second)
-
-	if err := cmd.Process.Kill(); err != nil {
-		log.Printf("VVVV shutdown error: %v\n", err)
-	}
+	log.Printf("VVVV started with %s\n", slaveAbs)
 }

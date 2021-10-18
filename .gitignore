@@ -41,7 +41,7 @@ node_modules/
 ### Content directory ###
 /content/*
 !/content/.gitkeep
-!/content/config.json
+!/content/content.json
 
 ### Runtime environment ###
 *.env
