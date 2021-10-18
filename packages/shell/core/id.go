@@ -3,12 +3,16 @@ package core
 import (
 	"bufio"
 	"log"
+	"math/rand"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 const idPath = "./id.txt"
 var idAbs string
+
+var letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 func init() {
 	var err error
@@ -16,6 +20,8 @@ func init() {
 	if err != nil {
 		log.Fatalf("Incorrect id file path: %v\n", err)
 	}
+
+	rand.Seed(time.Now().UnixNano())
 }
 
 func GetID() (string, error) {
@@ -52,4 +58,12 @@ func SetID(id string) error {
   }
   
   return nil
+}
+
+func RandomID() string {
+	b := make([]byte, 16)
+  for i := range b {
+  	b[i] = letterBytes[rand.Intn(len(letterBytes))]
+  }
+  return string(b)
 }

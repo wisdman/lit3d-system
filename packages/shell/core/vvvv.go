@@ -45,3 +45,12 @@ func VVVV(path string) {
 
 	log.Printf("VVVV started with %s\n", slaveAbs)
 }
+
+func KillVVVV() {
+	const args = "TASKKILL /F /IM vvvv.exe /T"
+	err := exec.Command("powershell", args).Run()
+	if err != nil {
+		return
+	}
+	return
+}

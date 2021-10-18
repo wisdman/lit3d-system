@@ -41,3 +41,12 @@ func Chrome(url string) {
 
 	log.Printf("Chrome started with url %s\n", url)
 }
+
+func KillChrome() {
+	const args = "TASKKILL /F /IM chrome.exe /T"
+	err := exec.Command("powershell", args).Run()
+	if err != nil {
+		return
+	}
+	return
+}

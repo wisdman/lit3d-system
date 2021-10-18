@@ -90,6 +90,4 @@ func Run()  {
     log.Printf("Run Chrome with url %s\n", "https://localhost")
     //Chrome("https://localhost")
   }
-  
-  
 }

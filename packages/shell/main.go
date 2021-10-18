@@ -15,6 +15,7 @@ import (
 	"github.com/wisdman/lit3d-system/libs/service"
 
 	"github.com/wisdman/lit3d-system/packages/shell/api"
+	"github.com/wisdman/lit3d-system/packages/shell/client"
 	"github.com/wisdman/lit3d-system/packages/shell/core"
 )
 
@@ -25,8 +26,8 @@ var appFS, _ = fs.Sub(appEmbedFS, "app")
 func main() {
 
 	var certFile, keyFile string
-  flag.StringVar(&certFile, "crt", "./ssl/localhost.crt", "TLS localhost certificate path")
-  flag.StringVar(&keyFile, "key", "./ssl/localhost.key", "TLS localhost private key path")
+  flag.StringVar(&certFile, "crt", "./ssl/server.crt", "TLS localhost server certificate path")
+  flag.StringVar(&keyFile, "key", "./ssl/server.key", "TLS localhost server private key path")
 
   var appDir, commonDir string
   flag.StringVar(&appDir, "app", "", "App directory path")
@@ -66,6 +67,8 @@ func main() {
 	api := &api.API{ srv.API("/api") }
 	api.GET("/shutdown", api.Shutdown)
 	api.GET("/restart", api.Restart)
+	api.GET("/reload", api.Reload)
+	api.GET("/stop", api.Stop)
 	api.GET("/id", api.GetID)
 	api.POST("/id", api.SetID)
 	api.GET("/screens", api.GetScreens)
@@ -73,6 +76,31 @@ func main() {
 	srv.ListenAndServe()
 
 	core.Run()
+
+	var id string
+	id, err = core.GetID()
+	if err != nil {
+		id = core.RandomID()
+	}
+
+	client := sseclient.New("https://future.rmh.local/api/bus/events/ticket-to-the-future/" + id)
+	go func(){
+		for {
+			select {
+			case command := <-client.Bus:
+				switch command.Type {
+				case "shutdown":
+					core.Shutdown()
+				case "restart":
+					core.Restart()
+				case "reload":
+					core.Reload()
+				case "stop":
+					core.Stop()
+				}
+			}	
+		}
+	}()
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
