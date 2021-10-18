@@ -56,7 +56,7 @@ func main() {
 	}
 
 	api := &api.API{ srv.API("/api") }
-	api.GET("/node/:id/:command", api.GetNode)
+	api.GET("/node/:id", api.GetNode)
 	
 	srv.ListenAndServe()
 
