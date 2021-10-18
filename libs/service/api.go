@@ -70,6 +70,8 @@ func (api *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	log.Println("NotFound")
+
 	// Search allowed methods for current request
 	var allow string
 	for method := range api.trees {

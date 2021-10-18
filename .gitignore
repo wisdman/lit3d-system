@@ -26,9 +26,22 @@ node_modules/
 /build/*
 !/build/.gitkeep
 
-### Releases ###
-/release/*
-!/release/.gitkeep
+### VVVV Embedded directory ###
+/vvvv/*
+!/vvvv/.gitkeep
+
+### Chromium Embedded directory ###
+/chromium/*
+!/chromium/.gitkeep
+
+### Chromium data directory ###
+/chromium-data/*
+!/chromium-data/.gitkeep
+
+### Content directory ###
+/content/*
+!/content/.gitkeep
+!/content/content.json
 
 ### Runtime environment ###
 *.env

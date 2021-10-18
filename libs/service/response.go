@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func ResponseTEXT(w http.ResponseWriter, body interface{}) {
+func ResponseText(w http.ResponseWriter, body interface{}) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	fmt.Fprint(w, body)
