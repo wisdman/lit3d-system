@@ -71,11 +71,12 @@ export class AdminComponent extends HTMLElement {
       this.#nodeList.appendChild(node)
       this.#nodeMap.set(data.id, node)
     }
-    this.#updateStatus()
+    await this.#updateStatus()
   }
 
   #updateStatus = async () => {
     const clients = this.#messageBus.getClients()
+    console.dir(clients)
     for (const [id, _, ip] of clients) {
       const node = this.#nodeMap.get(id)
       if (!node) { continue }
