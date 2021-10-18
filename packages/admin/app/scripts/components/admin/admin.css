@@ -1,0 +1,50 @@
+:host {
+  box-sizing: border-box;
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 50px 1fr;
+ 
+  justify-content: stretch;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.group-control {
+  box-sizing: border-box;
+  position: relative;
+
+  display: flex;
+  justify-content: end;
+  align-items: center;
+
+  padding: var(--default-padding);
+  gap: var(--default-padding);
+
+  background-color: rgb(36 41 47 / 1);
+}
+
+.btn {
+  font: inherit;
+  pointer-events: auto;
+}
+
+
+.node-list {
+  box-sizing: border-box;
+  position: relative;
+  padding: var(--default-padding);
+}
+
+.node-list-item {
+  margin-top: 2px;
+}
+
+.node-list-item:nth-child(odd) {
+  background-color: rgb(240 240 240 / 1);
+}
+
+.node-list-item:nth-child(even) {
+  background-color: rgb(230 230 230 / 1);
+}

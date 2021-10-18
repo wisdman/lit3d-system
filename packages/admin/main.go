@@ -13,6 +13,7 @@ import (
 
 	"github.com/wisdman/lit3d-system/libs/common"
 	"github.com/wisdman/lit3d-system/libs/service"
+	"github.com/wisdman/lit3d-system/libs/message-bus"
 
 	"github.com/wisdman/lit3d-system/packages/admin/api"
 )
@@ -55,8 +56,12 @@ func main() {
 		srv.FS("/common/", http.FS(common.FS))
 	}
 
-	api := &api.API{ srv.API("/api") }
+	api := &api.API{ srv.API("/api"), messageBus.New() }
 	api.GET("/node/:id", api.GetNode)
+	api.GET("/bus/events/:group/:id", api.SSE)
+	api.GET("/bus/clients", api.GetClients)
+	api.POST("/bus/message", api.Message)
+	api.GET("/config", api.GetConfig)
 	
 	srv.ListenAndServe()
 

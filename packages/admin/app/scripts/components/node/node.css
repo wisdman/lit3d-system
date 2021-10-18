@@ -1,0 +1,36 @@
+:host {
+  box-sizing: border-box;
+  position: relative;
+
+  display: flex;
+  flex-wrap: wrap;
+ 
+  justify-content: start;
+  align-items: center;
+
+  gap: var(--default-padding);
+  padding: calc(var(--default-padding) / 4);
+}
+
+.btn {
+  font: inherit;
+  pointer-events: auto;
+}
+
+.btn:first-of-type {
+  margin-left: auto;
+}
+
+.status {
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+
+  margin-right: calc(var(--default-padding) / 4);
+  background-color: rgb(66 66 66 / .5);
+}
+
+.status--online  { background-color: rgb( 20 200 20 / .9); }
+.status--warning { background-color: rgb(200 200 20 / .9); }
+.status--error   { background-color: rgb(200  20 20 / .9); }

@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 type Service struct {
@@ -72,7 +73,10 @@ func (service *Service) ListenAndServe() {
 }
 
 func (service *Service) Shutdown() {
-	err := service.server.Shutdown(context.Background())
+	ctx, cancel := context.WithTimeout(context.Background(), 10 * time.Second)
+	defer cancel()
+	
+	err := service.server.Shutdown(ctx)
 	if err != nil {
 		log.Printf("Service shutdown error: %v\n", err)
 		return
