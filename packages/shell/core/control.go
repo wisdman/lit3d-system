@@ -34,9 +34,14 @@ func Reload() {
 	Run()
 }
 
-
 func Stop() {
 	log.Println("Stop command")
 	KillChrome()
 	KillVVVV()
+}
+
+func ShowId() {
+	KillChrome()
+	KillVVVV()
+	Chrome("https://localhost#ID")
 }

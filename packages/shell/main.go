@@ -99,6 +99,8 @@ func main() {
 			select {
 			case command := <- client.Bus:
 				switch command.Type {
+				case "show-id":
+					core.ShowId()
 				case "shutdown":
 					core.Shutdown()
 				case "restart":
