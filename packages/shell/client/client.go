@@ -40,13 +40,13 @@ func (client *Client) listen() {
 		r, err := http.Get(client.url)
 		if err != nil {
 			log.Printf("HTTP Request error: %v\n", err)
-			time.Sleep(30 * time.Second)
+			time.Sleep(60 * time.Second)
 			continue
 		}
 
     if r.StatusCode != 200 {
       log.Printf("HTTP Response status code %d\n", r.StatusCode)
-      time.Sleep(30 * time.Second)
+      time.Sleep(60 * time.Second)
       continue
     }
 
@@ -56,6 +56,7 @@ func (client *Client) listen() {
       data, err := reader.ReadBytes('\n')
       if err != nil {
         log.Printf("HTTP Body read error: %v\n", err)
+        time.Sleep(60 * time.Second)
         continue LISTEN
       }
 

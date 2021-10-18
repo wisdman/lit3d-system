@@ -24,6 +24,18 @@ var appEmbedFS embed.FS
 var appFS, _ = fs.Sub(appEmbedFS, "app")
 
 func main() {
+	logAbs, err := filepath.Abs("./shell.log")
+	if err != nil {
+		log.Fatalf("Incorrect log file path: %v\n", err)
+	}
+
+	logFile, err := os.OpenFile(logAbs, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if err != nil {
+	  log.Fatalf("Error opening log file: %v\n", err)
+	}
+	defer logFile.Close()
+
+	log.SetOutput(logFile)
 
 	var certFile, keyFile string
   flag.StringVar(&certFile, "crt", "./ssl/server.crt", "TLS localhost server certificate path")
@@ -75,8 +87,6 @@ func main() {
 	
 	srv.ListenAndServe()
 
-	core.Run()
-
 	var id string
 	id, err = core.GetID()
 	if err != nil {
@@ -87,7 +97,7 @@ func main() {
 	go func(){
 		for {
 			select {
-			case command := <-client.Bus:
+			case command := <- client.Bus:
 				switch command.Type {
 				case "shutdown":
 					core.Shutdown()
@@ -101,6 +111,8 @@ func main() {
 			}	
 		}
 	}()
+	
+	core.Reload()
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
