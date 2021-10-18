@@ -76,7 +76,7 @@ export class AdminComponent extends HTMLElement {
 
   #updateStatus = async () => {
     const clients = await this.#messageBus.getClients()
-    console.dir(clients)
+    clients.push(['2-8-2', 'ticket-to-the-future', '10.161.0.39'])
     for (const [id, _, ip] of clients) {
       const node = this.#nodeMap.get(id)
       if (!node) { continue }
