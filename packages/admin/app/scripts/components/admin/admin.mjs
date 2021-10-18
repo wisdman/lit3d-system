@@ -75,7 +75,7 @@ export class AdminComponent extends HTMLElement {
   }
 
   #updateStatus = async () => {
-    const clients = this.#messageBus.getClients()
+    const clients = await this.#messageBus.getClients()
     console.dir(clients)
     for (const [id, _, ip] of clients) {
       const node = this.#nodeMap.get(id)
