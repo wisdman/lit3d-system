@@ -71,6 +71,7 @@ export class AdminComponent extends HTMLElement {
       this.#nodeList.appendChild(node)
       this.#nodeMap.set(data.id, node)
     }
+    this.#updateStatus()
   }
 
   #updateStatus = async () => {
@@ -81,6 +82,7 @@ export class AdminComponent extends HTMLElement {
       node.status = "online"
       node.ip = ip
     }
+    setTimeout(this.#updateStatus, 30 * 1000) // 30 sec
   }
 
   #reload = async (event) => {
