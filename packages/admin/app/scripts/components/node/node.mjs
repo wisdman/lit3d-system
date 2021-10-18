@@ -27,12 +27,20 @@ export class NodeComponent extends HTMLElement {
   #stopBtn = document.createElement("button")
 
   #status = null
+  #statusTimeout = undefined
   
   get status() {
     return this.#status
   }
 
   set status(value) {
+    if (this.#statusTimeout) {
+      clearTimeout(this.#statusTimeout)
+      this.#statusTimeout = undefined
+    }
+
+    this.#statusTimeout = setTimeout(() => this.status = "error", 60 * 1000)
+
     if (this.#status === value) { return }
 
     if (STATUS.includes(value)) {

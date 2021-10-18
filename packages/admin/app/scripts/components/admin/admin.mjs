@@ -71,16 +71,18 @@ export class AdminComponent extends HTMLElement {
       this.#nodeList.appendChild(node)
       this.#nodeMap.set(data.id, node)
     }
+    await this.#updateStatus()
   }
 
   #updateStatus = async () => {
-    const clients = this.#messageBus.getClients()
+    const clients = await this.#messageBus.getClients()
     for (const [id, _, ip] of clients) {
       const node = this.#nodeMap.get(id)
       if (!node) { continue }
       node.status = "online"
       node.ip = ip
     }
+    setTimeout(this.#updateStatus, 30 * 1000) // 30 sec
   }
 
   #reload = async (event) => {
