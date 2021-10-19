@@ -1,51 +1,55 @@
 
+import { FullScreenComponent } from "../fullscreen/fullscreen.mjs"
+import { MappingComponent } from "../mapping/mapping.mjs"
+
 import CSS from "./app.css" assert { type: "css" }
 
 const API_PATH = "/api" 
-const API_PATH_ID = `${API_PATH}/id`
+const API_PATH_CONFIG = `${API_PATH}/config`
 
 const DEFAULT_SERVER = window.location.origin
 
-export class AppComponent extends HTMLElement {
+const ID = window.location.hash.replace(/^#/,"")
 
-  #infoNode = document.createElement("div")
-  #idAPI = `${DEFAULT_SERVER}${API_PATH_ID}`
+export class AppComponent extends HTMLElement {
+  
+  #configAPI = `${DEFAULT_SERVER}${API_PATH_CONFIG}`
 
   constructor() {
     super()
 
     const root = this.attachShadow({mode: "open"})
     root.adoptedStyleSheets = [CSS]
-
-    this.#infoNode.classList.add("info")
-    root.appendChild(this.#infoNode)
   }
 
-  #getID = async () => {
+  #getFullConfig = async () => {
     try {
-      const response = await fetch(this.#idAPI)
-      return await response.text()
+      const response = await fetch(this.#configAPI)
+      return await response.json()
     } catch (error) {
       console.error(error)
-      return "BAD ID!"
+      return {}
     }
   }
 
-  #renderInfoNode = async () => {
-    const id = await this.#getID()
-    const height = window.outerHeight
-    const width = window.outerWidth
-    const x = 0
-    const y = 0
+  #getConfig = async () => {
+    const { mapping = [] } = await this.#getFullConfig() ?? {}
+    const config = mapping.find(item => item.id === ID)
+    return config ?? {}
+  }
 
-    const html = `<span class="info-id">${id}</span><span>${width}×${height}</span><span>x: ${x}  y: ${y}</span>`
-    requestAnimationFrame(() => this.#infoNode.innerHTML = html)
-    
-  } 
+  #init = async () => {
+    const { id, location, url, frameList = [], textureList = [] } = await this.#getConfig()
+    if (url) {
+      this.shadowRoot.appendChild(new FullScreenComponent(url))
+      return
+    }
 
-  connectedCallback() {
-    this.#renderInfoNode().then()
-    if (window.location.hash === "#ID") { return }
+    this.shadowRoot.appendChild(new MappingComponent({ frameList, textureList }))
+  }
+
+  async connectedCallback() {
+    await this.#init()
   }
 }
 

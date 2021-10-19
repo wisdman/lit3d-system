@@ -43,5 +43,5 @@ func Stop() {
 func ShowId() {
 	KillChrome()
 	KillVVVV()
-	Chrome("https://localhost#ID")
+	Chrome("https://localhost#ID", 100, 0, 0)
 }

@@ -24,19 +24,6 @@ var appEmbedFS embed.FS
 var appFS, _ = fs.Sub(appEmbedFS, "app")
 
 func main() {
-	logAbs, err := filepath.Abs("./shell.log")
-	if err != nil {
-		log.Fatalf("Incorrect log file path: %v\n", err)
-	}
-
-	logFile, err := os.OpenFile(logAbs, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
-	if err != nil {
-	  log.Fatalf("Error opening log file: %v\n", err)
-	}
-	defer logFile.Close()
-
-	log.SetOutput(logFile)
-
 	var certFile, keyFile string
   flag.StringVar(&certFile, "crt", "./ssl/server.crt", "TLS localhost server certificate path")
   flag.StringVar(&keyFile, "key", "./ssl/server.key", "TLS localhost server private key path")
@@ -45,7 +32,24 @@ func main() {
   flag.StringVar(&appDir, "app", "", "App directory path")
   flag.StringVar(&commonDir, "common", "", "Common directory path")
 
+  verbose := flag.Bool("v", false, "Verbose log")
+
   flag.Parse()
+
+  if *verbose != true {
+		logAbs, err := filepath.Abs("./shell.log")
+		if err != nil {
+			log.Fatalf("Incorrect log file path: %v\n", err)
+		}
+
+		logFile, err := os.OpenFile(logAbs, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+		if err != nil {
+		  log.Fatalf("Error opening log file: %v\n", err)
+		}
+		defer logFile.Close()
+
+		log.SetOutput(logFile)
+	}
 
 	srv := service.New(certFile, keyFile)
 	
@@ -84,6 +88,7 @@ func main() {
 	api.GET("/id", api.GetID)
 	api.POST("/id", api.SetID)
 	api.GET("/screens", api.GetScreens)
+	api.GET("/config", api.GetConfig)
 	
 	srv.ListenAndServe()
 
@@ -115,6 +120,7 @@ func main() {
 	}()
 	
 	core.Reload()
+	// core.Run()
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)

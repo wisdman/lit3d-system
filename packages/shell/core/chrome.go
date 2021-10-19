@@ -11,7 +11,7 @@ const chromePath = "./chromium/chrome.exe"
 var chromeAbs string
 
 const chromeDataPath = "./chromium-data"
-var chromeDataAbs string
+var ChromeDataAbs string
 
 func init() {
 	var err error
@@ -21,17 +21,24 @@ func init() {
 		log.Fatalf("Incorrect Chrome path: %v\n", err)
 	}
 
-	chromeDataAbs, err = filepath.Abs(chromeDataPath)
+	ChromeDataAbs, err = filepath.Abs(chromeDataPath)
 	if err != nil {
 		log.Fatalf("Incorrect Chrome data path: %v\n", err)
 	}
 }
 
-func Chrome(url string) {
+func Chrome(url string, num uint8, x, y int16) {
+	dataAbs, err := filepath.Abs(filepath.Join(ChromeDataAbs, fmt.Sprintf("/%d", num)))
+	if err != nil {
+		log.Fatalf("Incorrect Chrome data path: %v\n", err)
+	}
+
 	cmd := exec.Command(
 		chromeAbs,
-		fmt.Sprintf("--user-data-dir=%s", chromeDataAbs),
+		fmt.Sprintf("--user-data-dir=%s", dataAbs),
 		"--profile-directory=Default",
+		fmt.Sprintf("--window-position=%d,%d", x, y),
+		"--kiosk",
 		url,
 	)
 
