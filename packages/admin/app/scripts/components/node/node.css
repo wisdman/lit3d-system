@@ -10,6 +10,8 @@
 
   gap: var(--default-padding);
   padding: calc(var(--default-padding) / 4);
+
+  pointer-events: none;
 }
 
 .btn {

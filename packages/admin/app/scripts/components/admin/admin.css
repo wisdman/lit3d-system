@@ -35,6 +35,10 @@
   box-sizing: border-box;
   position: relative;
   padding: var(--default-padding);
+
+  overflow: hidden;
+  overflow-y: scroll;
+  pointer-events: auto;
 }
 
 .node-list-item {

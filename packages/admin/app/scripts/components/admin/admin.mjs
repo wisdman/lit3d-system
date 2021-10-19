@@ -82,6 +82,11 @@ export class AdminComponent extends HTMLElement {
       node.status = "online"
       node.ip = ip
     }
+    const notInConfigIds = clients.reduce((acc, [id, group]) => {
+      return group === "admin" || this.#nodeMap.has(id) ? acc : [...acc, id]
+    }, [])
+    if (notInConfigIds.length > 0) console.log("Not in config: ", notInConfigIds)
+
     setTimeout(this.#updateStatus, 30 * 1000) // 30 sec
   }
 
