@@ -6,7 +6,6 @@ const EXT_RX = /\.(?<ext>[^\.]+)$/
 export class FullScreenComponent extends HTMLElement {
   static CreateElement(url) {
     const { groups:{ ext } } = EXT_RX.exec("." + url) ?? { groups: {} }
-    console.dir(ext)
 
     return (ext => {
       switch(ext) {

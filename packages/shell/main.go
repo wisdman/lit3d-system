@@ -33,6 +33,7 @@ func main() {
   flag.StringVar(&commonDir, "common", "", "Common directory path")
 
   verbose := flag.Bool("v", false, "Verbose log")
+  server := flag.Bool("ds", false, "Debug server only")
 
   flag.Parse()
 
@@ -98,29 +99,31 @@ func main() {
 		id = core.RandomID()
 	}
 
-	client := sseclient.New("https://future.rmh.local/api/bus/events/ticket-to-the-future/" + id)
-	go func(){
-		for {
-			select {
-			case command := <- client.Bus:
-				switch command.Type {
-				case "show-id":
-					core.ShowId()
-				case "shutdown":
-					core.Shutdown()
-				case "restart":
-					core.Restart()
-				case "reload":
-					core.Reload()
-				case "stop":
-					core.Stop()
-				}
-			}	
-		}
-	}()
+	if (*server == false) {
+		client := sseclient.New("https://future.rmh.local/api/bus/events/ticket-to-the-future/" + id)
+		go func(){
+			for {
+				select {
+				case command := <- client.Bus:
+					switch command.Type {
+					case "show-id":
+						core.ShowId()
+					case "shutdown":
+						core.Shutdown()
+					case "restart":
+						core.Restart()
+					case "reload":
+						core.Reload()
+					case "stop":
+						core.Stop()
+					}
+				}	
+			}
+		}()
 	
-	core.Reload()
-	// core.Run()
+		core.Reload()
+		// core.Run()
+	}
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)

@@ -1,6 +1,6 @@
 
 import { FullScreenComponent } from "../fullscreen/fullscreen.mjs"
-import { MappingComponent } from "../mapping/mapping.mjs"
+import { MapperComponent } from "../mapper/mapper.mjs"
 
 import CSS from "./app.css" assert { type: "css" }
 
@@ -45,7 +45,23 @@ export class AppComponent extends HTMLElement {
       return
     }
 
-    this.shadowRoot.appendChild(new MappingComponent({ frameList, textureList }))
+    const mapper = this.shadowRoot.appendChild(new MapperComponent({ frameList, textureList }))
+    mapper.addEventListener("save", this.#save)
+  }
+
+  #save = async ({ detail:{ frameList, textureList } }) => {
+    const fullConfig = await this.#getFullConfig()
+    const mapping = fullConfig?.mapping?.find(item => item.id === ID)
+    if (!mapping) { return }
+    mapping.frameList = frameList ?? null
+    mapping.textureList = textureList ?? null
+
+    const a = document.createElement("a")
+    const file = new Blob([JSON.stringify(fullConfig)], { type: "application/json" })
+    a.href = URL.createObjectURL(file)
+    a.download = "content.json"
+    a.click()
+    setTimeout(() => a.remove(), 0)
   }
 
   async connectedCallback() {
