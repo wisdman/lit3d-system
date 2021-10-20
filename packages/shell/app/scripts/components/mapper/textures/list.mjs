@@ -29,13 +29,13 @@ export class TextureList extends EventTarget {
       case "mp4":
       case "webm":
       case "mkv":
-        return await new ImageTexture(this.#gl, id ?? this.next, url)
+        return await new VideoTexture(this.#gl, id ?? this.next, url)
 
       case "png":
       case "webp":
       case "avif":
       case "jpg":
-        return await new VideoTexture(this.#gl, id ?? this.next, url)
+        return await new ImageTexture(this.#gl, id ?? this.next, url)
     }
 
     return await new Texture(this.#gl, id ?? this.next)

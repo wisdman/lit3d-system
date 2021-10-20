@@ -90,6 +90,7 @@ func main() {
 	api.POST("/id", api.SetID)
 	api.GET("/screens", api.GetScreens)
 	api.GET("/config", api.GetConfig)
+	api.POST("/config", api.SaveConfig)
 	
 	srv.ListenAndServe()
 

@@ -56,12 +56,18 @@ export class AppComponent extends HTMLElement {
     mapping.frameList = frameList ?? null
     mapping.textureList = textureList ?? null
 
-    const a = document.createElement("a")
-    const file = new Blob([JSON.stringify(fullConfig)], { type: "application/json" })
-    a.href = URL.createObjectURL(file)
-    a.download = "content.json"
-    a.click()
-    setTimeout(() => a.remove(), 0)
+    try {
+      await fetch(this.#configAPI, {
+        method: "POST",
+        headers: {
+          "Accept": "application/json; charset=utf-8",
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(fullConfig)
+      })
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   async connectedCallback() {

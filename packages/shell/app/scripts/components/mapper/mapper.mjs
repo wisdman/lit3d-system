@@ -45,12 +45,15 @@ export class MapperComponent extends HTMLElement {
   #frameList = new FrameList(this.#gl)
   #textureList = new TextureList(this.#gl)
 
+  #activeFrame = undefined
+  #activeCorner = 1
+
   constructor({ frameList, textureList } = {}) {
     super()
     this.shadowRoot.adoptedStyleSheets = [CSS]
     this.#initProgramm()
     this.#initGeometry()
-    this.#frameList.load(frameList)
+    this.#activeFrame = this.#frameList.load(frameList)
     this.#textureList.load(textureList)
   }
 
@@ -129,8 +132,17 @@ export class MapperComponent extends HTMLElement {
   }
 
   #onFKey = async () => {
-    const frame = this.#frameList.add()
-    console.dir(frame)
+    this.#frameList.clear()
+    this.#activeFrame = this.#frameList.add()
+  }
+
+  #onNKey = async () => {
+    const name = prompt("Enter texture name", "")
+    if (name === null) { return }
+    this.#textureList.clear()
+    await this.#textureList.add(name ? `/content/${name}` : name)
+    this.#frameList.clear()
+    this.#activeFrame = this.#frameList.add()
   }
 
   #onSKey = (data) => {
@@ -148,14 +160,29 @@ export class MapperComponent extends HTMLElement {
     await this.#textureList.add(name)
   }
 
+  #on1Key = () => this.activeCorner = 1
+  #on2Key = () => this.activeCorner = 2
+  #on3Key = () => this.activeCorner = 3
+  #on4Key = () => this.activeCorner = 4
+
   #regKeys = () => {
+    this.#keyboard.on("1", this.#on1Key)
+    this.#keyboard.on("2", this.#on2Key)
+    this.#keyboard.on("3", this.#on3Key)
+    this.#keyboard.on("4", this.#on4Key)
     this.#keyboard.on("F", this.#onFKey)
+    this.#keyboard.on("N", this.#onNKey)
     this.#keyboard.on("S", this.#onSKey)
     this.#keyboard.on("U", this.#onUKey)
   }
 
   #unregKeys = () => {
+    this.#keyboard.off("1", this.#on1Key)
+    this.#keyboard.off("2", this.#on2Key)
+    this.#keyboard.off("3", this.#on3Key)
+    this.#keyboard.off("4", this.#on4Key)
     this.#keyboard.off("F", this.#onFKey)
+    this.#keyboard.off("N", this.#onNKey)
     this.#keyboard.off("S", this.#onSKey)
     this.#keyboard.off("U", this.#onUKey)
   }

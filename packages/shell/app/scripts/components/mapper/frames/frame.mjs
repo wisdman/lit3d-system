@@ -125,7 +125,7 @@ export class Frame extends EventTarget {
     ]
   }
 
-  #remove = () => this.dispatchEvent(new Event("remove"))
+  remove = () => this.dispatchEvent(new Event("remove"))
   #change = () => this.dispatchEvent(new Event("change"))
 
   toJSON() {

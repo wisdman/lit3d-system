@@ -56,6 +56,7 @@ export class FrameList extends EventTarget {
       return frame
     })
     this.#change()
+    return this.#frames[0]
   }
 
   get positions() { return this.#frames.reduce((acc, {dstPositions}) => [...acc, ...dstPositions], []) }
