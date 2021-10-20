@@ -11,6 +11,9 @@ import CSS from "./mapper.css" assert { type: "css" }
 const VERTEX_SHADER = await (await fetch(`${import.meta.url.replace(/[^\/]+$/, "")}shaders/vertex.glsl`)).text()
 const FRAGMENT_SHADER = await (await fetch(`${import.meta.url.replace(/[^\/]+$/, "")}shaders/fragment.glsl`)).text()
 
+const RESOLUTION_RX = /^\s*(?<width>\d+)?([^\d]+(?<height>\d+))?/
+const SHIFT_STEP = 20
+
 const FPS = 25
 
 export class MapperComponent extends HTMLElement {
@@ -46,7 +49,7 @@ export class MapperComponent extends HTMLElement {
   #textureList = new TextureList(this.#gl)
 
   #activeFrame = undefined
-  #activeCorner = 1
+  #activeCorner = -1
 
   constructor({ frameList, textureList } = {}) {
     super()
@@ -164,16 +167,80 @@ export class MapperComponent extends HTMLElement {
   #on2Key = () => this.activeCorner = 2
   #on3Key = () => this.activeCorner = 3
   #on4Key = () => this.activeCorner = 4
+  #on5Key = () => this.activeCorner = -1
+
+  #onRKey = () => {
+    if (!this.#activeFrame) { return }
+    const size = prompt("Enter frame resolution", `${this.#activeFrame.width}×${this.#activeFrame.height}`)
+    if (!size) break
+    const { width, height } = {
+      width: this.#activeFrame.width,
+      height: this.#activeFrame.height,
+      ...RESOLUTION_RX.exec(size).groups,
+    }
+    this.#activeFrame.size = [width, height]
+  }
+
+  #onTKey = () => {
+    const texture = prompt("Enter texture cords", `${this.#activeFrame.texture.join(",")}`)
+    if (!texture) break
+    this.#activeFrame.texture = texture.split(",").map(v => new Function(`return ${v}`)())
+  }
+
+  // ARROWUP
+  #onUPKey = ({ shift }) => {
+    if (this.#activeCorner < 0) {
+      this.#activeFrame.move(0, shift ? -SHIFT_STEP : -1)
+      return
+    }
+    
+    this.#activeFrame.moveCorner(this.#activeCorner, 0, shift ? -SHIFT_STEP : -1)
+  }
+
+  // ARROWDOWN
+  #onDownKey = ({ shift }) => {
+    if (this.#activeCorner < 0) {
+      this.#activeFrame.move(0, shift ? SHIFT_STEP : 1)
+      return
+    }
+    this.#activeFrame.moveCorner(this.#activeCorner, 0, shift ? SHIFT_STEP : 1)
+  }
+
+  // ARROWLEFT
+  #onLeftKey = ({ shift }) => {
+    if (this.#activeCorner < 0) {
+      this.#frame.move(shift ? -SHIFT_STEP : -1, 0)
+      return
+    }
+    this.#activeFrame.moveCorner(this.#activeCorner, shift ? -SHIFT_STEP : -1, 0)
+  }
+
+  // ARROWRIGHT
+  #onRightKey = ({ shift }) => {
+    if (this.#activeCorner < 0) {
+      this.#activeFrame.move(shift ? SHIFT_STEP : 1, 0)
+      return
+    }
+    this.#activeFrame.moveCorner(this.#activeCorner, shift ? SHIFT_STEP : 1, 0)
+  }
 
   #regKeys = () => {
     this.#keyboard.on("1", this.#on1Key)
     this.#keyboard.on("2", this.#on2Key)
     this.#keyboard.on("3", this.#on3Key)
     this.#keyboard.on("4", this.#on4Key)
+    this.#keyboard.on("5", this.#on5Key)
     this.#keyboard.on("F", this.#onFKey)
     this.#keyboard.on("N", this.#onNKey)
+    this.#keyboard.on("R", this.#onRKey)
     this.#keyboard.on("S", this.#onSKey)
+    this.#keyboard.on("T", this.#onTKey)
     this.#keyboard.on("U", this.#onUKey)
+    
+    this.#keyboard.on("ARROWUP"   , this.#onUPKey)
+    this.#keyboard.on("ARROWDOWN" , this.#onDownKey)
+    this.#keyboard.on("ARROWLEFT" , this.#onLeftKey)
+    this.#keyboard.on("ARROWRIGHT", this.#onRightKey)
   }
 
   #unregKeys = () => {
@@ -181,10 +248,18 @@ export class MapperComponent extends HTMLElement {
     this.#keyboard.off("2", this.#on2Key)
     this.#keyboard.off("3", this.#on3Key)
     this.#keyboard.off("4", this.#on4Key)
+    this.#keyboard.off("5", this.#on5Key)
     this.#keyboard.off("F", this.#onFKey)
     this.#keyboard.off("N", this.#onNKey)
+    this.#keyboard.off("R", this.#onRKey)
     this.#keyboard.off("S", this.#onSKey)
+    this.#keyboard.off("T", this.#onTKey)
     this.#keyboard.off("U", this.#onUKey)
+
+    this.#keyboard.off("ARROWUP"   , this.#onUPKey)
+    this.#keyboard.off("ARROWDOWN" , this.#onDownKey)
+    this.#keyboard.off("ARROWLEFT" , this.#onLeftKey)
+    this.#keyboard.off("ARROWRIGHT", this.#onRightKey)
   }
 
   #onCanvasResize = ([{contentRect: {width, height}}]) => {
