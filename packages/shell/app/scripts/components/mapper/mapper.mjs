@@ -172,7 +172,7 @@ export class MapperComponent extends HTMLElement {
   #onRKey = () => {
     if (!this.#activeFrame) { return }
     const size = prompt("Enter frame resolution", `${this.#activeFrame.width}×${this.#activeFrame.height}`)
-    if (!size) break
+    if (!size) { return }
     const { width, height } = {
       width: this.#activeFrame.width,
       height: this.#activeFrame.height,
@@ -183,7 +183,7 @@ export class MapperComponent extends HTMLElement {
 
   #onTKey = () => {
     const texture = prompt("Enter texture cords", `${this.#activeFrame.texture.join(",")}`)
-    if (!texture) break
+    if (!texture) { return }
     this.#activeFrame.texture = texture.split(",").map(v => new Function(`return ${v}`)())
   }
 
@@ -209,7 +209,7 @@ export class MapperComponent extends HTMLElement {
   // ARROWLEFT
   #onLeftKey = ({ shift }) => {
     if (this.#activeCorner < 0) {
-      this.#frame.move(shift ? -SHIFT_STEP : -1, 0)
+      this.#activeFrame.move(shift ? -SHIFT_STEP : -1, 0)
       return
     }
     this.#activeFrame.moveCorner(this.#activeCorner, shift ? -SHIFT_STEP : -1, 0)
