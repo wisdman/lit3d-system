@@ -8,6 +8,9 @@ const STATUS_WARNING = "warning"
 const STATUS_ERROR   = "error"
 const STATUS = [STATUS_ONLINE, STATUS_WARNING, STATUS_ERROR]
 
+const isNotifyAllow = (await Notification.requestPermission()) === "granted"
+console.log(isNotifyAllow)
+
 export class NodeComponent extends HTMLElement {
 
   #id = ""
@@ -49,6 +52,8 @@ export class NodeComponent extends HTMLElement {
     } else {
       this.#status = value = null
     }
+
+    this.#notifyStatus(this.#status)
 
     const statusNode = this.#statusNode
     requestAnimationFrame(() => {
@@ -111,7 +116,7 @@ export class NodeComponent extends HTMLElement {
     
     this.#showIdBtn.innerHTML = "Show ID"
     this.#showIdBtn.classList.add("btn", "btn--id")
-    root.appendChild(this.#showIdBtn)
+    // root.appendChild(this.#showIdBtn)
 
     this.#stopBtn.innerHTML = "Stop"
     this.#stopBtn.classList.add("btn", "btn--stop")
@@ -201,6 +206,9 @@ export class NodeComponent extends HTMLElement {
     this.#restartBtn.addEventListener("click", this.#restart)
     this.#shutdownBtn.addEventListener("click", this.#shutdown)
     this.#stopBtn.addEventListener("click", this.#stop)
+
+    this.#ipNode.addEventListener("click", this.#copyIP)
+    this.#idNode.addEventListener("click", this.#copyID)
   }
 
   disconnectedCallback() {
@@ -209,6 +217,49 @@ export class NodeComponent extends HTMLElement {
     this.#restartBtn.removeEventListener("click", this.#restart)
     this.#shutdownBtn.removeEventListener("click", this.#shutdown)
     this.#stopBtn.removeEventListener("click", this.#stop)
+
+    this.#ipNode.removeEventListener("click", this.#copyIP)
+    this.#idNode.removeEventListener("click", this.#copyID)
+  }
+
+  #copyID = async () => {
+    const id = this.#id
+    console.log(id)
+    await this.#copy(id)
+    this.#notifyStatus(STATUS_ERROR)
+  }
+
+  #copyIP = async () => {
+    const ip = this.ip
+    console.log(ip)
+    await this.#copy(ip)
+  }
+
+  #copy = async (text) => {
+    const type = "text/plain";
+    const blob = new Blob([text], { type });
+    const data = [new ClipboardItem({ [type]: blob })]
+    try {
+      await navigator.clipboard.write(data)
+    } catch (err) {
+      console.error("Copy error: ", err)
+    }
+  }
+
+  #notifyStatus = (status) => {
+    if (status === STATUS_WARNING) {
+      const text = `${this.#id} WARNING`
+      new Notification(text)
+      console.log(text)
+      return
+    } 
+
+    if (status === STATUS_ERROR) {
+      const text = `${this.#id} ERROR`
+      new Notification(text)
+      console.log(text)
+      return
+    }
   }
 }
 

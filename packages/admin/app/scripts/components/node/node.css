@@ -36,3 +36,13 @@
 .status--online  { background-color: rgb( 20 200 20 / .9); }
 .status--warning { background-color: rgb(200 200 20 / .9); }
 .status--error   { background-color: rgb(200  20 20 / .9); }
+
+.label--id, .label--ip {
+  pointer-events: auto;
+  transition: color 250ms;
+  cursor: copy;
+}
+
+.label--id:hover, .label--ip:hover {
+  color: var(--ss-text-hover);
+}

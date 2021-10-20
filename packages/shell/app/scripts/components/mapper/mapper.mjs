@@ -163,11 +163,11 @@ export class MapperComponent extends HTMLElement {
     await this.#textureList.add(name)
   }
 
-  #on1Key = () => this.activeCorner = 1
-  #on2Key = () => this.activeCorner = 2
-  #on3Key = () => this.activeCorner = 3
-  #on4Key = () => this.activeCorner = 4
-  #on5Key = () => this.activeCorner = -1
+  #on1Key = () => this.#activeCorner = 0
+  #on2Key = () => this.#activeCorner = 1
+  #on3Key = () => this.#activeCorner = 2
+  #on4Key = () => this.#activeCorner = 3
+  #on5Key = () => this.#activeCorner = -1
 
   #onRKey = () => {
     if (!this.#activeFrame) { return }

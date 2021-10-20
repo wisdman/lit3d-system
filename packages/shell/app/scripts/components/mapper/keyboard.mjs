@@ -12,11 +12,14 @@ export class Keyboard {
   }
 
   #keydown = event => {
+    console.dir(event)
+
     if (!this.#isActive) {
       return
     }
     const { altKey:alt, ctrlKey:ctrl, metaKey:meta, shiftKey:shift } = event
     const key = event.key.toUpperCase()
+    console.log(key)
     ;(this.#listeners.get(key) ?? []).forEach(fn => fn({ alt,ctrl,meta,shift }))
   }
 
