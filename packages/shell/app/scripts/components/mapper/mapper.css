@@ -8,6 +8,8 @@
 
   justify-items: stretch;
   align-items: stretch;
+
+  pointer-events: auto;
 }
 
 canvas {

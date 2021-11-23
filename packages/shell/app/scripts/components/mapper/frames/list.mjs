@@ -46,7 +46,7 @@ export class FrameList extends EventTarget {
     this.#change()
   }
 
-  load = async list => {
+  load = list => {
     this.#frames = this.#frames.filter(f => (f.remove(), false))
     if (!Array.isArray(list)) { return }
     
