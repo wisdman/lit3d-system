@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/wisdman/lit3d-system/packages/shell/core"
 	"github.com/wisdman/lit3d-system/libs/service"
+	"github.com/wisdman/lit3d-system/packages/shell/core"
 )
 
 func (api *API) GetConfig(w http.ResponseWriter, r *http.Request) {
