@@ -16,7 +16,7 @@
     "group":"Romanovi - 4 projectors"
   },{
     "id":"2-1-2",
-    "group":"Romanovi"
+    "group":"Romanovi - Fire"
   },{
     "id":"2-1-3",
     "group":"Romanovi"
@@ -34,7 +34,7 @@
     "group":"Romanovi - 3 projectors"
   },{
     "id":"2-2-2",
-    "group":"Romanovi - Fire"
+    "group":"Romanovi"
   },{
     "id":"2-2-3",
     "group":"Romanovi"
@@ -144,8 +144,8 @@
     "id":"2-9-1",
     "group":"Romanovi - 4 projectors"
   },{
-    "id":"2-9-2 - Kinekt",
-    "group":"Romanovi"
+    "id":"2-9-2",
+    "group":"Romanovi - Kinekt"
   },{
     "id":"2-9-3",
     "group":"Romanovi"
@@ -165,8 +165,8 @@
     "id":"2-10-1",
     "group":"Romanovi - 6 projectors"
   },{
-    "id":"2-10-2 - Kinekt",
-    "group":"Romanovi"
+    "id":"2-10-2",
+    "group":"Romanovi - Kinekt"
   },{
     "id":"2-10-3",
     "group":"Romanovi"
@@ -198,8 +198,8 @@
     "id":"2-12-1",
     "group":"Romanovi  - 5 projectors"
   },{
-    "id":"2-12-2 - Kinekt",
-    "group":"Romanovi"
+    "id":"2-12-2",
+    "group":"Romanovi - Kinekt"
   },{
     "id":"2-12-3",
     "group":"Romanovi"
