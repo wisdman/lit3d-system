@@ -140,7 +140,7 @@ export class NodeComponent extends HTMLElement {
     try {
       await this.#messageBus.command({
         client: this.#id,
-        group: this.#group,
+        group: null,
         type: "show-id",
       })
     } catch (error) {
@@ -153,7 +153,7 @@ export class NodeComponent extends HTMLElement {
     try {
       await this.#messageBus.command({
         client: this.#id,
-        group: this.#group,
+        group: null,
         type: "reload",
       })
     } catch (error) {
@@ -166,7 +166,7 @@ export class NodeComponent extends HTMLElement {
     try {
       await this.#messageBus.command({
         client: this.#id,
-        group: this.#group,
+        group: null,
         type: "restart",
       })
     } catch (error) {
@@ -179,7 +179,7 @@ export class NodeComponent extends HTMLElement {
     try {
       await this.#messageBus.command({
         client: this.#id,
-        group: this.#group,
+        group: null,
         type: "shutdown",
       })
     } catch (error) {
@@ -192,7 +192,7 @@ export class NodeComponent extends HTMLElement {
     try {
       await this.#messageBus.command({
         client: this.#id,
-        group: this.#group,
+        group: null,
         type: "stop",
       })
     } catch (error) {
